@@ -14,22 +14,27 @@ class SimulateRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'initial_value' => 'required|numeric',
-      'rate' => 'required|numeric',
-      'months' => 'required|integer',
-      'value_per_month' => 'nullable|numeric',
+      'initial_value' => 'required|numeric|min:1',
+      'rate' => 'required|numeric|min:1',
+      'months' => 'required|integer|min:1',
+      'value_per_month' => 'nullable|numeric|min:0',
     ];
   }
 
   public function messages()
   {
     return [
-      'initial_value.required' => 'O valor inicial deve ser preenchido',
-      'initial_value.numeric' => 'O valor inicial deve ser um número',
-      'rate.required' => 'A taxa deve ser preenchida',
-      'rate.numeric' => 'A taxa deve ser um número',
-      'months.required' => 'Períodos deve ser preenchido',
-      'months.integer' => 'O número de períodos deve ser um número inteiro',
-    ];
+      'initial_value.required' => 'O valor inicial é obrigatório.',
+      'initial_value.numeric' => 'O valor inicial deve ser um número.',
+      'initial_value.min' => 'O valor inicial deve ser maior ou igual a 1.',
+      'value_per_month.numeric' => 'O valor adicional por mês deve ser um número.',
+      'value_per_month.min' => 'O valor adicional por mês deve ser maior ou igual a 0.',
+      'rate.required' => 'A taxa de juros anual é obrigatória.',
+      'rate.numeric' => 'A taxa de juros anual deve ser um número.',
+      'rate.min' => 'A taxa de juros anual deve ser maior ou igual a 1.',
+      'months.required' => 'O número de períodos é obrigatório.',
+      'months.integer' => 'O número de períodos deve ser um número inteiro.',
+      'months.min' => 'O número de períodos deve ser maior ou igual a 1.',
+  ];
   }
 }

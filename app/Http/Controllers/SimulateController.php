@@ -27,11 +27,12 @@ class SimulateController extends Controller
 
       $result = number_format($result, 2, ',', '.');
 
-      return view('welcome', ['result' => $result]);
+      return view('welcome', ['result' => $result, 'request' => $request->all()]);
 
     } catch (\Exception $e) {
       Log::info($e->getMessage());
-      return view('welcome')->withErrors(['error' => 'Ocorreu um erro ao processar a simulação.']);
+      dd($request->all());
+      return redirect()->back()->withErrors(['error' => 'Ocorreu um erro ao processar a simulação.']);
     }
   }
 }
