@@ -31,7 +31,6 @@ class SimulateController extends Controller
 
     } catch (\Exception $e) {
       Log::info($e->getMessage());
-      dd($request->all());
       return redirect()->back()->withErrors(['error' => 'Ocorreu um erro ao processar a simulação.']);
     }
   }

@@ -16,6 +16,7 @@ return new class extends Migration
       $table->float('rate');
       $table->integer('months');
       $table->float('result');
+      $table->float('final_value');
 
       $table->rememberToken();
       $table->timestamps();
