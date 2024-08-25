@@ -25,7 +25,7 @@
             </div>
           </div>
         </form>
-        <a href="{{ route('auth.password') }}" class="text-blue">
+        <a href="{{ route('auth.password') }}" class="items-center text-blue-500 flex justify-center">
           Esqueci a senha
         </a>
       </div>

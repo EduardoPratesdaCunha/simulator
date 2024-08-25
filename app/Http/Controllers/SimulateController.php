@@ -4,15 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SimulateRequest;
 use App\Models\Simulate;
+use App\Services\CalculateService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class SimulateController extends Controller
 {
+  protected $calculateService;
+
+  public function __construct(CalculateService $calculateService)
+  {
+    $this->calculateService = $calculateService;
+  }
+
   public function index(Request $request)
   {
     try {
@@ -60,45 +67,18 @@ class SimulateController extends Controller
       DB::beginTransaction();
       $data = $request->validated();
 
-      $initialValue = floatval($data['initial_value']);
-      $rate = ($data['rate'] / 100) / 12;
-      $months = intval($data['months']) * 12;
-      $valuePerMonth = !empty($data['value_per_month']) ? floatval($data['value_per_month']) : 0;
+      $resultData = $this->calculateService->calculateAndSave($data);
 
-      $result = $initialValue * pow(1 + $rate, $months);
-
-      if ($valuePerMonth > 0) {
-        $result2 = $valuePerMonth * (pow(1 + $rate, $months) - 1) / $rate;
-        $result += $result2;
-      }
-
-      $resultFromat = number_format($result, 2, ',', '.');
+      DB::commit();
 
       if (!Auth::check()) {
         return view('welcome', [
-          'result' => $resultFromat,
+          'result' => $resultData['result'],
           'request' => $request->all()
         ]);
       }
 
-      $simulate = new Simulate();
-      $simulate->id = Str::uuid();
-      $simulate->user_id = Auth::id();
-      $simulate->initial_value = $initialValue;
-      $simulate->rate = $data['rate'];
-      $simulate->months = $months;
-      $simulate->value_per_month = number_format($valuePerMonth, 2, '.', '');
-      $simulate->result = number_format($result, 2, '.', '');
-      $simulate->name = $data['name'] ?? null;
-      $simulate->final_value = null;
-      $simulate->save();
-
-      DB::commit();
-
-      return redirect()->route('simulate.index', [
-        'simulate' => $simulate,
-        'request' => $request->all()
-      ]);
+      return redirect()->route('simulate.index');
 
     } catch (Exception $e) {
       DB::rollBack();
@@ -119,7 +99,8 @@ class SimulateController extends Controller
 
       $data = $request->validated();
 
-      $simulate->update($data);
+      $this->calculateService->calculateAndSave($data, $simulate->id);
+
       DB::commit();
 
       return redirect()->route('simulate.index')->with('success', 'Simulado alterado com sucesso');

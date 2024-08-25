@@ -42,7 +42,7 @@
         name="months"
         id="months"
         class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        value="{{ isset($request['months']) ? $request['months'] : ( $simulate->months ?? null) }}">
+        value="{{ isset($request['months']) ? $request['months']/12 : ( isset($simulate) ? $simulate->months/12 : null) }}">
     </div>
     <div class="flex justify-around">
       <button type="submit" class="bg-blue-500 text-white font-bold my-6 py-2 px-4 rounded hover:bg-blue-600">Calcular</button>
