@@ -5,9 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         @vite('resources/css/app.css')
         <script src="https://cdn.tailwindcss.com"></script>
+        <title>Calcule Juros Composto</title>
     </head>
-    <body class="bg-gray-500 text-gray-800">
-      <nav class="bg-gray-800">
+    <body class=" dark:bg-gray-800">
+      <nav class="bg-gray-600">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div class="relative flex h-16 items-center justify-between">
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">

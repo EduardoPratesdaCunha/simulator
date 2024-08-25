@@ -6,10 +6,10 @@
         @vite('resources/css/app.css')
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/inputmask.min.js"></script>
-
+        <title>Calcule Juros Composto</title>
     </head>
-    <body class="bg-gray-500 text-gray-800">
-      <nav class="bg-gray-800">
+    <body class="text-gray-800 ">
+      <nav class="dark:bg-gray-600">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div class="relative flex h-16 items-center justify-between">
             <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
