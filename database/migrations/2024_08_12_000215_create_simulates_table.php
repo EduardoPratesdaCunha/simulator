@@ -12,11 +12,13 @@ return new class extends Migration
       $table->uuid('id')->primary();
       $table->foreignUuid('user_id')->references('id')->on('users')->nullable()->constrained()->onDelete('cascade');
 
+      $table->string('name')->nullable();
       $table->float('initial_value');
+      $table->float('value_per_month')->nullable();
       $table->float('rate');
       $table->integer('months');
       $table->float('result');
-      $table->float('final_value');
+      $table->float('final_value')->nullable();
 
       $table->rememberToken();
       $table->timestamps();
