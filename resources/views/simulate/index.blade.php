@@ -27,13 +27,18 @@
                       name="created_at"
                       value="{{ !empty(request()->created_at) ? \Carbon\Carbon::parse(request()->created_at)->format('Y-m-d') : '' }}">
                   </div>
-                  <div class="m-4">
-                    <button class="border-4 border-grey-500  rounded-md p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400" type="submit">Filtrar</button>
-                    <a class="border-4 border-grey-500 rounded-md p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400" href="{{ route('simulate.index') }}">limpar</a>
+                  <div class="mt-4">
+                    <button class="px-5 py-1 mx-1 border-b-4 border-transparent hover:border-gray-500 rounded text-xs font-medium text-gray-500 uppercase dark:text-gray-400 transition duration-300" type="submit">
+                      Filtrar
+                    </button>
+                    <a class="px-5 py-1 mx-1 border-b-4 border-transparent hover:border-gray-500 rounded text-xs font-medium text-gray-500 uppercase dark:text-gray-400 transition duration-300" href="{{ route('simulate.index') }}">
+                      Limpar
+                    </a>
                   </div>
                 </form>
-                <a href="{{ route('simulate.create') }}" class="border-4 border-sky-500 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" data-drawer-placement="right">
-                  Criar Simulado
+                <a href="{{ route('simulate.create') }}"
+                  class=" px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700 transition duration-300">
+                  Adicionar
                 </a>
             </div>
         </div>
@@ -58,13 +63,13 @@
                                 Valor de rendimento
                               </th>
                               <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                Tempo Ano | Mês
+                              </th>
+                              <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                                 Valor Total
                               </th>
                               <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                                 Taxa ao Ano | ao Mês
-                              </th>
-                              <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                Tempo Ano | Mês
                               </th>
                               <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                                 Data de criação
@@ -75,6 +80,27 @@
                           </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                          <tr class="dark:bg-gray-900 text-white hover:bg-black-100 dark:bg-black-800 dark:hover:bg-black-200 dark:divide-black-700">
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              Valor Total
+                            </td>
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              {{ valueFormat($simulates->sum('initial_value')) }}
+                            </td>
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              {{ valueFormat($simulates->sum('value_per_month')) . " | " . valueFormat($simulates->sum('value_per_month') * 12) }}
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              {{ valueFormat($simulates->sum('result') - ($simulates->sum('initial_value') + ($simulates->sum('value_per_month') * 12))) }}
+                            </td>
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              {{ valueFormat($simulates->sum('result')) }}
+                            </td>
+                            <td></td>
+                          </tr>
                           @foreach ($simulates as $simulate)
                             <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
@@ -84,12 +110,12 @@
                                   <div class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ valueFormat($simulate->initial_value) }}</div>
                                 </td>
                                 <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                  <div class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ valueFormat($simulate->value_per_month) }}</div>
+                                  <div class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ valueFormat($simulate->value_per_month) . " | " . valueFormat($simulate->value_per_month * 12) }}</div>
                                 </td>
-                                <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ valueFormat($simulate->result - ($simulate->initial_value + $simulate->value_per_month))  }}</td>
-                                <td class="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">{{ valueFormat($simulate->result) }}</td>
                                 <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $simulate->rate }}% | {{ rateFormat(($simulate->rate / 100) / 12) }}</td>
                                 <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ intval($simulate->months) / 12 }} ano(s) | {{ $simulate->months }} Mêses</td>
+                                <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ valueFormat($simulate->result - ($simulate->initial_value + ($simulate->value_per_month * 12)))  }}</td>
+                                <td class="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">{{ valueFormat($simulate->result) }}</td>
                                 <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $simulate->created_at->format('d/m/Y') }}</td>
 
                                 <td class="p-4 space-x-2 whitespace-nowrap">
