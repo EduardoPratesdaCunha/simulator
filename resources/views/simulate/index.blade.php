@@ -92,13 +92,13 @@
                             </td>
                             <td></td>
                             <td></td>
-                            <td></td>
                             <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                               {{ valueFormat($simulates->sum('result') - ($simulates->sum('initial_value') + ($simulates->sum('value_per_month') * 12))) }}
                             </td>
                             <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                               {{ valueFormat($simulates->sum('result')) }}
                             </td>
+                            <td></td>
                             <td></td>
                           </tr>
                           @foreach ($simulates as $simulate)
